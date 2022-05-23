@@ -27,7 +27,19 @@ If you need a more in-depth guide, I would recommend reading:
 
 ## Setup from scratch via gCloud CLI
 
-- Required vars
+- Finding your billing account ID:
+
+  ```bash
+  gcloud alpha billing accounts list --filter='NAME:<some name>' --format='value(ACCOUNT_ID)'
+  ```
+
+- Finding your Organization ID
+  
+  ```bash
+  gcloud organizations list --filter='DISPLAY_NAME:<some org name>' --format='value(ID)'
+  ```
+
+- Populate required data
 
   ```bash
   export PROJECT_NAME="An Easy To Read Name"
@@ -35,10 +47,11 @@ If you need a more in-depth guide, I would recommend reading:
   export BIG_ROBOT_NAME="myserviceaccount"
   export BIG_ROBOT_EMAIL="none"
   export ORGANIZATION="company.com"
+  export ORGANIZATION_ID="none"
   export LOCATION="europe-west1"
   export KEYRING="mykeyring"
   export KEYRING_KEY="terraform-key"
-  export BILLING_ACCOUNT=$(gcloud alpha billing accounts list --filter='NAME:<some name>' --format='value(ACCOUNT_ID)')
+  export BILLING_ACCOUNT="none"
   export GCLOUD_CLI_IMAGE_URL="gcr.io/google.com/cloudsdktool/google-cloud-cli"
   export GCLOUD_CLI_IMAGE_TAG="slim"
   export BACKEND_BUCKET_NAME="$PROJECT_ID-backend-state-storage"
@@ -133,18 +146,6 @@ If you need a more in-depth guide, I would recommend reading:
 ## Managing with Terraform through a service account
 
 After you have the base resources in place and your have a service-account identity + credentials, you can run terraform locally or in a CI system like GitHub Actions or Jenkins.
-
-- Finding your billing account ID:
-
-  ```bash
-  gcloud alpha billing accounts list --filter='NAME:<some name>' --format='value(ACCOUNT_ID)'
-  ```
-
-- Finding your Organization ID
-  
-  ```bash
-  gcloud organizations list --filter='DISPLAY_NAME:<some org name>' --format='value(ID)'
-  ```
 
 - Enable Services 
 
