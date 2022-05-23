@@ -40,6 +40,12 @@ If you need a more in-depth guide, I would recommend reading:
   gcloud organizations list --filter='DISPLAY_NAME:<some org name>' --format='value(ID)'
   ```
 
+- Finding your credential path:
+
+  ```bash
+  echo "$HOME/.config/gcloud/application_default_credentials.json"
+  ```
+
 ## Terraform Installation
 
 Link to the Terraform Provider's Documentation: https://registry.terraform.io/providers/hashicorp/google/latest/docs
