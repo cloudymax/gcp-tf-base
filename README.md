@@ -154,15 +154,11 @@ After you have the base resources in place and your have a service-account ident
   # todo: gather all services
   ```
 
-## Terraform Installation
+## Terraform Installation Methods
 
-Link to the Terraform Provider's Documentation: https://registry.terraform.io/providers/hashicorp/google/latest/docs
+I like using tfenv to manage my terrform install and versioning. Link: https://github.com/tfutils/tfenv
 
-The latest verison as of 17/05/22 is 4.21.0
-
-I'll be using tfenv to manage my terrform install and versioning. Link: https://github.com/tfutils/tfenv
-
-1. Via tfenv (brew only)
+1. Install Via tfenv (brew only)
 
     ```bash
     # install via brew
@@ -181,7 +177,7 @@ I'll be using tfenv to manage my terrform install and versioning. Link: https://
     terraform -version
     ```
 
-2. Via Docker
+2. Install Via Docker
 
     Add the --entrypoint /bin/sh flag to get a shell.
 
@@ -192,5 +188,3 @@ I'll be using tfenv to manage my terrform install and versioning. Link: https://
 
     docker run -it -v "$(pwd)/secure:/root/secure" -v "$(pwd)/terraform:/root/terraform" --workdir "/root/terraform" hashicorp/terraform:latest init
     ```
-
-3. Populate terraform.tfvars
