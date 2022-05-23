@@ -1,8 +1,4 @@
-# Ephemeral GKE project base config
-
-**WIP, To Do: gcloud CLI commands for vpc, network, and subnets. Terraform for pushing the local state to the newly created bucket.**
-
-**The modularized version is [HERE](https://github.com/cloudymax/modules-gcp-tf-base) for people who already have the basics in place**
+# Ephemeral GKE project base config (WiP)
 
 Every time you go do a Terraform Tutorial, there are certain things you're expected to have in-place already aside from just a GCP account and an organization:
 
@@ -12,6 +8,8 @@ Every time you go do a Terraform Tutorial, there are certain things you're expec
 - IAM permissions
 - Keys
 - VPC, Network, SubNet
+
+**The modularized version is [HERE](https://github.com/cloudymax/modules-gcp-tf-base) for people who already have the basics in place**
 
 Most of the time the author doesn't cover these bits so IMO it's worth having them documented somewhere for reference. 
 
