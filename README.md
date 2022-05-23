@@ -14,6 +14,8 @@ Every time you go do a Terraform Tutorial, there are certain things you're expec
 
 Most of the time the author doesn't cover these bits so IMO it's worth having them documented somewhere for reference.
 
+You can find a modularized version of this project [HERE](https://github.com/cloudymax/modules-gcp-tf-base) for those who prefer that workflow.
+
 This does NOT include a bastion jump box, firewall rules, or workload identities. These will be done later in a GKE or Compute VM specific repo. This is just for the basics.
 
 This guide is meant to be a low-effort general solution/example.
