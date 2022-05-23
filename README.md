@@ -38,25 +38,67 @@ If you need a more in-depth guide, I would recommend reading:
   gcloud organizations list --filter='DISPLAY_NAME:<some org name>' --format='value(ID)'
   ```
 
-```bash
-export PROJECT_NAME="An Easy To Read Name"
-export PROJECT_ID="machine-readable-name"
-export BIG_ROBOT_NAME="myserviceaccount"
-export BIG_ROBOT_EMAIL="none"
-export ORGANIZATION="company.com"
-export LOCATION="europe-west1"
-export KEYRING="mykeyring"
-export KEYRING_KEY="terraform-key"
-export BILLING_ACCOUNT=$(gcloud alpha billing accounts list --filter='NAME:<some name>' --format='value(ACCOUNT_ID)')
-export GCLOUD_CLI_IMAGE_URL="gcr.io/google.com/cloudsdktool/google-cloud-cli"
-export GCLOUD_CLI_IMAGE_TAG="slim"
-export BACKEND_BUCKET_NAME="$PROJECT_ID-backend-state-storage"
-export BUCKET_PATH_PREFIX:"terraform/state"
-```
+## Terraform Installation
 
-## Deploy with terraform
+Link to the Terraform Provider's Documentation: https://registry.terraform.io/providers/hashicorp/google/latest/docs
 
-## How to setup via gCloud CLI instead of terraform
+The latest verison as of 17/05/22 is 4.21.0
+
+I'll be using tfenv to manage my terrform install and versioning. Link: https://github.com/tfutils/tfenv
+
+1. Via tfenv (brew only)
+
+    ```bash
+    # install via brew
+    brew install tfenv
+
+    # install the latest terraform version
+    tfenv install latest
+
+    # select the version to use 
+    tfenv use 1.1.9
+
+    # add to path if prompted
+    export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+
+    # verify by checking version
+    terraform -version
+    ```
+
+2. Via Docker
+
+    Add the --entrypoint /bin/sh flag to get a shell.
+
+    ```bash
+    docker pull hashicorp/terraform:latest
+
+    cd /GKE-HelloWorld
+
+    docker run -it -v "$(pwd)/secure:/root/secure" -v "$(pwd)/terraform:/root/terraform" --workdir "/root/terraform" hashicorp/terraform:latest init
+    ```
+
+3. Populate terraform.tfvars
+
+## Setup via gCloud CLI instead of terraform
+
+- Required vars
+
+  ```bash
+  export PROJECT_NAME="An Easy To Read Name"
+  export PROJECT_ID="machine-readable-name"
+  export BIG_ROBOT_NAME="myserviceaccount"
+  export BIG_ROBOT_EMAIL="none"
+  export ORGANIZATION="company.com"
+  export LOCATION="europe-west1"
+  export KEYRING="mykeyring"
+  export KEYRING_KEY="terraform-key"
+  export BILLING_ACCOUNT=$(gcloud alpha billing accounts list --filter='NAME:<some name>' --format='value(ACCOUNT_ID)')
+  export GCLOUD_CLI_IMAGE_URL="gcr.io/google.com/cloudsdktool/google-cloud-cli"
+  export GCLOUD_CLI_IMAGE_TAG="slim"
+  export BACKEND_BUCKET_NAME="$PROJECT_ID-backend-state-storage"
+  export BUCKET_PATH_PREFIX:"terraform/state"
+  ```
+
 1. Create a new Project and set it as active, then enable billing
 
 ```bash

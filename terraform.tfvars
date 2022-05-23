@@ -1,25 +1,25 @@
 # Account options
-organization     = "deserialize.me"
-organization_id  = "482340583508"
-credentials_path = "/Users/max/.config/gcloud/application_default_credentials.json"
-billing_account  = "some account"
+organization     = ""
+organization_id  = ""
+credentials_path = ""
+billing_account  = ""
 
 # Geographic Options
-main_availability_zone = "europe-west1-d"
-location               = "europe-west1"
+main_availability_zone = ""
+location               = ""
 
 # Project 
-project_name = "GKE Howdy"
-project_id   = "gke-howdy"
+project_name = ""
+project_id   = ""
 
 # Keyring
-keyring     = "keys4max"
-keyring_key = "terraform-key"
+keyring     = ""
+keyring_key = ""
 
 # IAM
-big_robot_group = "top-level-admins"
-big_robot_name  = "bighowdy"
+big_robot_group = ""
+big_robot_name  = ""
 
 # State bucket
-backend_bucket_name = "backend-state-storage"
-bucket_path_prefix  = "terraform/state"
+backend_bucket_name = ""
+bucket_path_prefix  = ""
