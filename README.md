@@ -14,7 +14,7 @@ Most of the time the author doesn't cover these bits so IMO it's worth having th
 **The modularized version is [HERE](https://github.com/cloudymax/modules-gcp-tf-base) for people who already have the basics in place**
 
 
-## Whats NOT in this project 
+## Whats NOT in this project (yet)
 
 This does NOT include a bastion jump box, firewall rules, or workload identities. These will be done later in a GKE or Compute VM specific repo. This is just for the basics you need to have terraform manage the life-cycle of GCP projects.
 
@@ -27,6 +27,8 @@ If you need a more in-depth guides on GKE, I would recommend reading:
 - [Google Cloud Workload Identity with Kubernetes and Terraform](https://www.cobalt.io/blog/google-cloud-workload-identity-with-kubernetes-and-terraform) by Nikola Velkovski
 
 ## Setup your base from scratch via gCloud CLI
+
+[Installing the gCloud CLI](https://cloud.google.com/sdk/docs/install)
 
 - Finding your billing account ID:
 
