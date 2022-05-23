@@ -1,5 +1,8 @@
 # Ephemeral GKE project base config
 
+**WIP, To Do: gcloud CLI commands for vpc, network, and subnets. Terraform for pushing the local state to the newly created bucket.**
+
+
 Every time you go do a Terraform Tutorial, there are certain things you're expected to have in-place already aside from just a GCP account and an organization:
 
 - Project
@@ -19,9 +22,6 @@ If you need a more in-depth guide, I would recommend reading:
 - [GKE private cluster with a bastion host](https://medium.com/google-cloud/gke-private-cluster-with-a-bastion-host-5480b44793a7) by Peter Hrvola
 - [How to use a Private Cluster in Kubernetes Engine](https://github.com/GoogleCloudPlatform/gke-private-cluster-demo) by the GCP team
 - [Google Cloud Workload Identity with Kubernetes and Terraform](https://www.cobalt.io/blog/google-cloud-workload-identity-with-kubernetes-and-terraform) by Nikola Velkovski
-
-
-**WIP, need to add the gcloud CLI commands for vpc, network, and subnets and the terraform for pushing the local state to the newly created bucket.**
 
 
 ## Required data:
