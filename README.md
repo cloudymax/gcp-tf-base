@@ -101,94 +101,93 @@ I'll be using tfenv to manage my terrform install and versioning. Link: https://
 
 1. Create a new Project and set it as active, then enable billing
 
-```bash
-gcloud projects create $PROJECT_ID --name="$PROJECT_NAME"
-gcloud config set project $PROJECT_ID
-gcloud alpha billing projects link $PROJECT_ID --billing-account $BILLING_ACCOUNT
-```
+  ```bash
+  gcloud projects create $PROJECT_ID --name="$PROJECT_NAME"
+  gcloud config set project $PROJECT_ID
+  gcloud alpha billing projects link $PROJECT_ID --billing-account $BILLING_ACCOUNT
+  ```
 
 1. Create a group:
 
-```bash
-gcloud identity groups create "admin-bot-group@$ORGANIZATION" --organization=$ORGANIZATION --display-name="top-level bot group" --description="Admin level access robots"
-
-```
+  ```bash
+  gcloud identity groups create "admin-bot-group@$ORGANIZATION" --organization=$ORGANIZATION --display-name="top-level bot group" --description="Admin level access robots"
+  ```
 
 2. Give the group some permissions:
 
-```bash
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member=group:"admin-bot-group@$ORGANIZATION" \
-  --role=roles/iam.serviceAccountUser
-  --role=roles/compute.instanceAdmin.v1
-  --role=roles/roles/compute.osLogin
+  ```bash
+  gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member=group:"admin-bot-group@$ORGANIZATION" \
+    --role=roles/iam.serviceAccountUser
+    --role=roles/compute.instanceAdmin.v1
+    --role=roles/roles/compute.osLogin
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member=group:"admin-bot-group@$ORGANIZATION" \
-  --role=roles/owner
-```
+  gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member=group:"admin-bot-group@$ORGANIZATION" \
+    --role=roles/owner
+  ```
 
 3. create an admin account that will run terraform and get the email address
 
-```bash
- gcloud iam service-accounts create $BIG_ROBOT_NAME --display-name="$BIG_ROBOT_NAME" 
+  ```bash
+   gcloud iam service-accounts create $BIG_ROBOT_NAME --display-name="$BIG_ROBOT_NAME" 
 
- export BIG_ROBOT_EMAIL=$(gcloud iam service-accounts describe $BIG_ROBOT_NAME@$PROJECT_ID.iam.gserviceaccount.com --format='value(email)')
-```
+   export BIG_ROBOT_EMAIL=$(gcloud iam service-accounts describe $BIG_ROBOT_NAME@$PROJECT_ID.iam.gserviceaccount.com --format='value(email)')
+  ```
 
 4. Add the service account to the group for 1 hour:
 
-```bash
-gcloud identity groups memberships add \
-  --group-email="admin-bot-group@$ORGANIZATION" \
-  --member-email="$BIG_ROBOT_EMAIL"
-```
+  ```bash
+  gcloud identity groups memberships add \
+    --group-email="admin-bot-group@$ORGANIZATION" \
+    --member-email="$BIG_ROBOT_EMAIL"
+  ```
 
 5. Create a KeyRing and a key
 
-```bash
-gcloud kms keyrings create $KEYRING --location=$LOCATION
+  ```bash
+  gcloud kms keyrings create $KEYRING --location=$LOCATION
 
-gcloud kms keys create $KEYRING_KEY \
-    --keyring $KEYRING \
-    --location $LOCATION \
-    --purpose "encryption"
-```
+  gcloud kms keys create $KEYRING_KEY \
+      --keyring $KEYRING \
+      --location $LOCATION \
+      --purpose "encryption"
+  ```
 
 6. Then we create a service-account key, auth the key and assume the identity
 
-```bash
-gcloud iam service-accounts keys create $(pwd)/$INSECURE_FILE --iam-account="$BIG_ROBOT_EMAIL"
+  ```bash
+  gcloud iam service-accounts keys create $(pwd)/$INSECURE_FILE --iam-account="$BIG_ROBOT_EMAIL"
 
-gcloud auth activate-service-account "$BIG_ROBOT_EMAIL" \
-    --key-file=$(pwd)/$INSECURE_FILE  \
-    --project=$PROJECT_ID
-```
+  gcloud auth activate-service-account "$BIG_ROBOT_EMAIL" \
+      --key-file=$(pwd)/$INSECURE_FILE  \
+      --project=$PROJECT_ID
+  ```
 
 7. Encrypt the file. Delete the insecure version after.
 
-```bash
-gcloud kms encrypt --key=$KEYRING_KEY \
-    --keyring=$KEYRING \
-    --location=$LOCATION \
-    --ciphertext-file=$(pwd)/secure/$SECURE_FILE \
-    --plaintext-file=$(pwd)/$INSECURE_FILE
+  ```bash
+  gcloud kms encrypt --key=$KEYRING_KEY \
+      --keyring=$KEYRING \
+      --location=$LOCATION \
+      --ciphertext-file=$(pwd)/secure/$SECURE_FILE \
+      --plaintext-file=$(pwd)/$INSECURE_FILE
 
-rm $INSECURE_FILE
-```
+  rm $INSECURE_FILE
+  ```
 
 8. Create backend bucket for the state and enable versioning:
 
-```bash
-gsutil mb gs://$BACKEND_BUCKET_NAME
+  ```bash
+  gsutil mb gs://$BACKEND_BUCKET_NAME
 
-gsutil versioning set on gs://$BACKEND_BUCKET_NAME
-```
+  gsutil versioning set on gs://$BACKEND_BUCKET_NAME
+  ```
 
 7. Init terraform
 
-```bash
-terraform init -backend-config "bucket=gke-howdy-backend-state-storage" \
-  -backend-config "prefix=$BUCKET_PATH_PREFIX" \
-  -backend-config "credentials=../$INSECURE_FILE" 
-```
+  ```bash
+  terraform init -backend-config "bucket=gke-howdy-backend-state-storage" \
+    -backend-config "prefix=$BUCKET_PATH_PREFIX" \
+    -backend-config "credentials=../$INSECURE_FILE" 
+  ```
