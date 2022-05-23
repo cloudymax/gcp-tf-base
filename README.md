@@ -7,7 +7,7 @@ Every time you go do a Terraform Tutorial, there are certain things you're expec
 
 - Project
 - State Bucket
-- Service Account
+- Service Accounts
 - IAM permissions
 - Keys
 - VPC, Network, SubNet
@@ -25,69 +25,7 @@ If you need a more in-depth guide, I would recommend reading:
 - [How to use a Private Cluster in Kubernetes Engine](https://github.com/GoogleCloudPlatform/gke-private-cluster-demo) by the GCP team
 - [Google Cloud Workload Identity with Kubernetes and Terraform](https://www.cobalt.io/blog/google-cloud-workload-identity-with-kubernetes-and-terraform) by Nikola Velkovski
 
-
-## Required data:
-
-- Finding your billing account ID:
-
-  ```bash
-  gcloud alpha billing accounts list --filter='NAME:<some name>' --format='value(ACCOUNT_ID)'
-  ```
-
-- Finding your Organization ID (Needed for Terraform only)
-  
-  ```bash
-  gcloud organizations list --filter='DISPLAY_NAME:<some org name>' --format='value(ID)'
-  ```
-
-- Finding your credential path:
-
-  ```bash
-  echo "$HOME/.config/gcloud/application_default_credentials.json"
-  ```
-
-## Terraform Installation
-
-Link to the Terraform Provider's Documentation: https://registry.terraform.io/providers/hashicorp/google/latest/docs
-
-The latest verison as of 17/05/22 is 4.21.0
-
-I'll be using tfenv to manage my terrform install and versioning. Link: https://github.com/tfutils/tfenv
-
-1. Via tfenv (brew only)
-
-    ```bash
-    # install via brew
-    brew install tfenv
-
-    # install the latest terraform version
-    tfenv install latest
-
-    # select the version to use 
-    tfenv use 1.1.9
-
-    # add to path if prompted
-    export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
-
-    # verify by checking version
-    terraform -version
-    ```
-
-2. Via Docker
-
-    Add the --entrypoint /bin/sh flag to get a shell.
-
-    ```bash
-    docker pull hashicorp/terraform:latest
-
-    cd /GKE-HelloWorld
-
-    docker run -it -v "$(pwd)/secure:/root/secure" -v "$(pwd)/terraform:/root/terraform" --workdir "/root/terraform" hashicorp/terraform:latest init
-    ```
-
-3. Populate terraform.tfvars
-
-## Setup via gCloud CLI instead of terraform
+## Setup from scratch via gCloud CLI
 
 - Required vars
 
@@ -135,14 +73,6 @@ I'll be using tfenv to manage my terrform install and versioning. Link: https://
       --role=roles/owner
     ```
 
-3. create an admin account that will run terraform and get the email address
-
-    ```bash
-     gcloud iam service-accounts create $BIG_ROBOT_NAME --display-name="$BIG_ROBOT_NAME" 
-
-     export BIG_ROBOT_EMAIL=$(gcloud iam service-accounts describe $BIG_ROBOT_NAME@$PROJECT_ID.iam.gserviceaccount.com --format='value(email)')
-    ```
-
 4. Add the service account to the group for 1 hour:
 
     ```bash
@@ -172,7 +102,7 @@ I'll be using tfenv to manage my terrform install and versioning. Link: https://
         --project=$PROJECT_ID
     ```
 
-7. Encrypt the file. Delete the insecure version after.
+7. Encrypt the file. Delete the insecure version after  you're done with it.
 
     ```bash
     gcloud kms encrypt --key=$KEYRING_KEY \
@@ -199,3 +129,67 @@ I'll be using tfenv to manage my terrform install and versioning. Link: https://
       -backend-config "prefix=$BUCKET_PATH_PREFIX" \
       -backend-config "credentials=../$INSECURE_FILE" 
     ```
+
+## Managing with Terraform through a service account
+
+After you have the base resources in place and your have a service-account identity + credentials, you can run terraform locally or in a CI system like GitHub Actions or Jenkins.
+
+- Finding your billing account ID:
+
+  ```bash
+  gcloud alpha billing accounts list --filter='NAME:<some name>' --format='value(ACCOUNT_ID)'
+  ```
+
+- Finding your Organization ID
+  
+  ```bash
+  gcloud organizations list --filter='DISPLAY_NAME:<some org name>' --format='value(ID)'
+  ```
+
+- Enable Services 
+
+  ```bash
+  gcloud services enable compute.googleapis.com
+  # todo: gather all services
+  ```
+
+## Terraform Installation
+
+Link to the Terraform Provider's Documentation: https://registry.terraform.io/providers/hashicorp/google/latest/docs
+
+The latest verison as of 17/05/22 is 4.21.0
+
+I'll be using tfenv to manage my terrform install and versioning. Link: https://github.com/tfutils/tfenv
+
+1. Via tfenv (brew only)
+
+    ```bash
+    # install via brew
+    brew install tfenv
+
+    # install the latest terraform version
+    tfenv install latest
+
+    # select the version to use 
+    tfenv use 1.1.9
+
+    # add to path if prompted
+    export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+
+    # verify by checking version
+    terraform -version
+    ```
+
+2. Via Docker
+
+    Add the --entrypoint /bin/sh flag to get a shell.
+
+    ```bash
+    docker pull hashicorp/terraform:latest
+
+    cd /GKE-HelloWorld
+
+    docker run -it -v "$(pwd)/secure:/root/secure" -v "$(pwd)/terraform:/root/terraform" --workdir "/root/terraform" hashicorp/terraform:latest init
+    ```
+
+3. Populate terraform.tfvars
