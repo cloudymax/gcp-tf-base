@@ -1,6 +1,6 @@
 # Ephemeral GKE project base config (WiP)
 
-Every time you go do a Terraform Tutorial, there are certain things you're expected to have in-place already aside from just a GCP account and an organization:
+Every time you go do a Terraform Tutorial, there are certain things you're expected to have in-place already aside from just a GCP account and an organization like:
 
 - Project
 - State Bucket
@@ -9,20 +9,24 @@ Every time you go do a Terraform Tutorial, there are certain things you're expec
 - Keys
 - VPC, Network, SubNet
 
+Most of the time the author doesn't cover these bits so IMO it's worth having the process for creating them documented somewhere for reference. After you have a base project managed by a service account, you can use the modular version of this project to create/delete projects via terraform without the need for the gCloud CLI.
+
 **The modularized version is [HERE](https://github.com/cloudymax/modules-gcp-tf-base) for people who already have the basics in place**
 
-Most of the time the author doesn't cover these bits so IMO it's worth having them documented somewhere for reference. 
 
-This does NOT include a bastion jump box, firewall rules, or workload identities. These will be done later in a GKE or Compute VM specific repo. This is just for the basics.
+## Whats NOT in this project 
+
+This does NOT include a bastion jump box, firewall rules, or workload identities. These will be done later in a GKE or Compute VM specific repo. This is just for the basics you need to have terraform manage the life-cycle of GCP projects.
 
 This guide is meant to be a low-effort general solution/example.
-If you need a more in-depth guide, I would recommend reading:
+
+If you need a more in-depth guides on GKE, I would recommend reading:
 
 - [GKE private cluster with a bastion host](https://medium.com/google-cloud/gke-private-cluster-with-a-bastion-host-5480b44793a7) by Peter Hrvola
 - [How to use a Private Cluster in Kubernetes Engine](https://github.com/GoogleCloudPlatform/gke-private-cluster-demo) by the GCP team
 - [Google Cloud Workload Identity with Kubernetes and Terraform](https://www.cobalt.io/blog/google-cloud-workload-identity-with-kubernetes-and-terraform) by Nikola Velkovski
 
-## Setup from scratch via gCloud CLI
+## Setup your base from scratch via gCloud CLI
 
 - Finding your billing account ID:
 
