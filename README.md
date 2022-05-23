@@ -2,6 +2,7 @@
 
 **WIP, To Do: gcloud CLI commands for vpc, network, and subnets. Terraform for pushing the local state to the newly created bucket.**
 
+**The modularized version is [HERE](https://github.com/cloudymax/modules-gcp-tf-base) for people who already have the basics in place**
 
 Every time you go do a Terraform Tutorial, there are certain things you're expected to have in-place already aside from just a GCP account and an organization:
 
@@ -12,9 +13,7 @@ Every time you go do a Terraform Tutorial, there are certain things you're expec
 - Keys
 - VPC, Network, SubNet
 
-Most of the time the author doesn't cover these bits so IMO it's worth having them documented somewhere for reference.
-
-You can find a modularized version of this project [HERE](https://github.com/cloudymax/modules-gcp-tf-base) for those who prefer that workflow.
+Most of the time the author doesn't cover these bits so IMO it's worth having them documented somewhere for reference. 
 
 This does NOT include a bastion jump box, firewall rules, or workload identities. These will be done later in a GKE or Compute VM specific repo. This is just for the basics.
 
